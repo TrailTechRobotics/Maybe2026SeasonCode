@@ -44,6 +44,13 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    double omegaRps = units.degreesToRotations(m_robotContainer.m_robotDrive.getTurnRate());
+    var llMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+//these two for test CHANGE LATER
+    if (llMeasurement != null && llMeasurement.tagCount > 0 && Math.abs(omegaRps) < 2.0) {
+      m_robotContainer.m_robotDrive.resetOdometry(llMeasurement.pose);
+    }
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
